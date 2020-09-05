@@ -1,0 +1,41 @@
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: example
+  labels:
+    app: example
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: example
+  template:
+    metadata:
+      labels:
+        app: example
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "8080"
+        prometheus.io/path: /internal/metrics
+    spec:
+      containers:
+        - name: async-profiler-example-k8s
+          image: localhost:5000/async-profiler-example-k8s:latest
+          ports:
+            - containerPort: 8080
+
+---
+kind: Service
+apiVersion: v1
+metadata:
+  name: example
+spec:
+  type: NodePort
+  selector:
+    app: example
+  ports:
+    - protocol: TCP
+      targetPort: 8080
+      port: 8080
+      nodePort: 30999
