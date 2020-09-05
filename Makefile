@@ -15,6 +15,12 @@ kubectl-create-example:
 kubectl-delete-example:
 	kubectl delete -f manifests/example.yml
 
+start-profiling:
+	kubectl exec -it $$(kubectl get pods | grep example- | awk '{print $$1}') -- bash -c '/async-profiler/async-profiler-*-linux-x64/profiler.sh -d 30 -f /tmp/cpu_profile.svg 1'
+
+copy-profile_svg:
+	kubectl cp $$(kubectl get pods | grep example- | awk '{print $$1}'):/tmp/cpu_profile.svg ./cpu_profile.svg
+
 kubectl-get:
 	kubectl get deployment -o wide
 	kubectl get svc -o wide
