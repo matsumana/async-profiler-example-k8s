@@ -10,11 +10,6 @@ RUN cd /tmp && \
 # --------------------------------------
 FROM adoptopenjdk:11.0.8_10-jdk-hotspot
 
-# for async-profiler
-# ref: https://github.com/jvm-profiling-tools/async-profiler
-#RUN echo 0 > /proc/sys/kernel/kptr_restrict && \
-#    echo 1 > /proc/sys/kernel/perf_event_paranoid
-
 RUN useradd app
 RUN mkdir /app
 RUN chown -R app:app /app
